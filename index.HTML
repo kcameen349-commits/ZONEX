@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZONEX - Pro Gaming Studio & Arena</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Poppins:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #06060e;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Wide Smoky RGB Gaming Room Background */
+        .smoke-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(255, 0, 128, 0.28) 0%, transparent 45%),
+                radial-gradient(circle at 85% 25%, rgba(0, 240, 255, 0.25) 0%, transparent 45%),
+                radial-gradient(circle at 50% 85%, rgba(138, 43, 226, 0.32) 0%, transparent 50%),
+                radial-gradient(circle at 20% 75%, rgba(0, 255, 136, 0.15) 0%, transparent 40%);
+            filter: blur(35px);
+            animation: smokeMove 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes smokeMove {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.18) translate(-20px, 20px); }
+        }
+
+        /* ZONEX Splash Screen Animation */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #04040a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeOutSplash 1s ease-in-out 2.6s forwards;
+        }
+
+        .splash-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 6px;
+            background: linear-gradient(90deg, #00f0ff, #ff007f, #8a2be2, #00f0ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 35px rgba(0, 240, 255, 0.6);
+            animation: pulseGlow 1.5s infinite alternate, gradientShift 3s linear infinite;
+        }
+
+        .splash-sub {
+            color: #a0a0cc;
+            margin-top: 12px;
+            letter-spacing: 4px;
+            font-size: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        @keyframes gradientShift {
+            to { background-position: 200% center; }
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.94); opacity: 0.85; }
+            100% { transform: scale(1.06); opacity: 1; }
+        }
+
+        @keyframes fadeOutSplash {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Main Gaming Room Container */
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 20px;
+            opacity: 0;
+            animation: enterRoom 1s ease-in-out 3s forwards;
+        }
+
+        @keyframes enterRoom {
+            to { opacity: 1; }
+        }
+
+        /* Top Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(18px);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 25px rgba(138, 43, 226, 0.25);
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #00f0ff, #ff007f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .coin-box {
+            background: linear-gradient(45deg, #ff9900, #ff007f);
+            padding: 9px 18px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 0 18px rgba(255, 0, 127, 0.5);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .user-profile-btn {
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid #00f0ff;
+            color: #00f0ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .user-profile-btn:hover {
+            background: #00f0ff;
+            color: #000;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: linear-gradient(90deg, #00f0ff, #8a2be2);
+            border-color: transparent;
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.5);
+        }
+
+        /* Sections Control */
+        .section {
+            display: none;
+            animation: fadeInSec 0.4s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInSec {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 18px;
+            color: #e0e0ff;
+            letter-spacing: 1px;
+        }
+
+        /* Wide Game Categories Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .game-card {
+            background: rgba(20, 20, 38, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff007f;
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
+        }
+
+        .game-icon {
+            font-size: 2.2rem;
+        }
+
+        .game-card h3 {
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
+        /* Cards & Forms */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(16px);
+            border-radius: 18px;
+            padding: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+            border-color: rgba(0, 240, 255, 0.4);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(0, 240, 255, 0.2);
+            color: #00f0ff;
+            margin-bottom: 10px;
+        }
+
+        .badge.verified {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .badge.top-creator {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #00f0ff, #8a2be2);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 22px rgba(255, 0, 127, 0.6);
+        }
+
+        .btn-pink {
+            background: linear-gradient(90deg, #ff007f, #8a2be2);
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(90deg, #25d366, #128c7e);
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Form Inputs */
+        .form-box {
+            background: rgba(15, 15, 30, 0.85);
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 0, 127, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #ccc;
+            margin-bottom: 6px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #00f0ff;
+        }
+
+        .form-group select option {
+            background: #101022;
+            color: #fff;
+        }
+
+        .commission-note {
+            font-size: 0.85rem;
+            color: #00ff88;
+            margin-top: 5px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Smoky RGB Background -->
+    <div class="smoke-bg"></div>
+
+    <!-- ZONEX Splash Entry Screen -->
+    <div id="splash-screen">
+        <div class="splash-title">ZONEX</div>
+        <div class="splash-sub">ENTERING PRO GAMING STUDIO...</div>
+    </div>
+
+    <!-- Main Gaming Room Dashboard -->
+    <div class="container">
+        <header>
+            <div class="logo" onclick="switchTab('home')">ZONEX</div>
+            <div class="header-controls">
+                <div class="coin-box" onclick="claimDailyCoin()">🪙 <span id="coin-balance">150</span> Coins</div>
+                <div class="user-profile-btn" onclick="switchTab('profile')">👤 My Studio</div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('home')">🏠 Gaming Room</button>
+            <button class="tab-btn" onclick="switchTab('giveaways')">🎁 Giveaways</button>
+            <button class="tab-btn" onclick="switchTab('market')">🛒 Account Market</button>
+            <button class="tab-btn" onclick="switchTab('sensitivity')">🎯 Pro Sensitivity</button>
+            <button class="tab-btn" onclick="switchTab('videos')">▶️ Gamer Clips & Leaderboard</button>
+            <button class="tab-btn" onclick="switchTab('redeem')">💎 Redeem</button>
+        </div>
+
+        <!-- 1. HOME / GAMING ROOM SECTION -->
+        <div id="home" class="section active">
+            <h2>🔥 SELECT YOUR GAME ARENA</h2>
+            <div class="games-grid">
+                <div class="game-card" onclick="switchTab('videos')">
+                    <div class="game-icon">🔥</div>
+                    <h3>Free Fire</h3>
+                </div>
+                <div class="game-card" onclick="switchTab('videos')">
+                    <div class="game-icon">🔫</div>
+                    <h3>PUBG / BGMI</h3>
+                </div>
+                <div class="game-card" onclick="switchTab('videos')">
+                    <div class="game-icon">⚽</div>
+                    <h3>EA Sports FC</h3>
+                </div>
+                <div class="game-card" onclick="switchTab('videos')">
+                    <div class="game-icon">🏆</div>
+                    <h3>PES (eFootball)</h3>
+                </div>
+                <div class="game-card" onclick="switchTab('videos')">
+                    <div class="game-icon">👻</div>
+                    <h3>Granny Horror</h3>
+                </div>
+                <div class="game-card" onclick="switchTab('videos')">
+                    <div class="game-icon">🚀</div>
+                    <h3>Mini Militia</h3>
+                </div>
+            </div>
+
+            <h2>⚡ TRENDING IN ZONEX STUDIO</h2>
+            <div class="grid-cards">
+                <div class="glass-card">
+                    <span class="badge verified">✔ Verified YouTuber Giveaway</span>
+                    <h3>₹160 Redeem Custom Room</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Hosted by: <b>Kerala Gamer YT</b><br>Game: Free Fire | Room ID: 8849201</p>
+                    <button class="btn" onclick="switchTab('giveaways')">Join & Get ID</button>
+                </div>
+
+                <div class="glass-card">
+                    <span class="badge top-creator">👑 Top Creator Leaderboard</span>
+                    <h3>Earn Coins from Video Views</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Upload clips, get views, and top creators get featured on the main board with coin rewards!</p>
+                    <button class="btn btn-pink" onclick="switchTab('videos')">View Leaderboard</button>
+                </div>
+
+                <div class="glass-card">
+                    <span class="badge">▶️ Creator Studio</span>
+                    <h3>Send Clips via WhatsApp</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Directly send your gaming clips to our official WhatsApp number.</p>
+                    <a href="https://wa.me/919745013938?text=Hello%20ZONEX%20Admin,%20I%20want%20to%20send%20my%20gaming%20video%20clip!" target="_blank" class="btn btn-whatsapp">💬 Send on WhatsApp</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. CREATOR GIVEAWAYS SECTION -->
+        <div id="giveaways" class="section">
+            <h2>🎁 YOUTUBER GIVEAWAYS & LIVE ROOMS</h2>
+            <div class="form-box">
+                <h3 style="margin-bottom: 15px; color: #00f0ff;">📢 Post Your Giveaway</h3>
+                <div class="form-group">
+                    <label>YouTuber / Channel Name</label>
+                    <input type="text" id="yt-name" placeholder="Ex: Al Ameen Gaming">
+                </div>
+                <div class="form-group">
+                    <label>Select Game</label>
+                    <select id="yt-game">
+                        <option value="Free Fire">Free Fire</option>
+                        <option value="PUBG / BGMI">PUBG / BGMI</option>
+                        <option value="EA Sports FC">EA Sports FC</option>
+                        <option value="PES">PES (eFootball)</option>
+                        <option value="Mini Militia">Mini Militia</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Redeem Code Prize Amount (₹)</label>
+                    <input type="number" id="yt-prize" placeholder="Ex: 80 or 160">
+                </div>
+                <div class="form-group">
+                    <label>Custom Room ID & Password</label>
+                    <input type="text" id="yt-room" placeholder="Ex: ID: 123456 | Pass: 99">
+                </div>
+                <button class="btn btn-pink" onclick="addGiveaway()">Post Giveaway 🚀</button>
+            </div>
+
+            <div class="grid-cards" id="giveaway-list">
+                <div class="glass-card">
+                    <span class="badge verified">✔ Proof Verified | Free Fire</span>
+                    <h3>₹80 Google Play Redeem Match</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Creator: <b>Malayali Pro YT</b><br>Room Details: <b>ID: 554120 | Pass: 1122</b></p>
+                    <button class="btn" onclick="alert('Room Details Copied!')">Copy Room ID</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. ACCOUNT MARKETPLACE SECTION -->
+        <div id="market" class="section">
+            <h2>🛒 SAFE ACCOUNT MARKETPLACE</h2>
+            <div class="form-box">
+                <h3 style="margin-bottom: 15px; color: #ff007f;">💰 Sell Your Game Account</h3>
+                <div class="form-group">
+                    <label>Select Game</label>
+                    <select id="acc-game">
+                        <option value="Free Fire">Free Fire</option>
+                        <option value="PUBG / BGMI">PUBG / BGMI</option>
+                        <option value="EA Sports FC">EA Sports FC</option>
+                        <option value="PES">PES (eFootball)</option>
+                        <option value="Granny">Granny Special</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Account Title & Highlights</label>
+                    <input type="text" id="acc-title" placeholder="Ex: Level 65 ID, 3 Evo Guns">
+                </div>
+                <div class="form-group">
+                    <label>Selling Price (₹)</label>
+                    <input type="number" id="acc-price" placeholder="Ex: 500" oninput="calculateCommission()">
+                    <div class="commission-note" id="comm-display">ZONEX Platform Fee (10%): ₹0 | You Receive: ₹0</div>
+                </div>
+                <button class="btn" onclick="addAccount()">List Account 🛒</button>
+            </div>
+
+            <div class="grid-cards" id="market-list">
+                <div class="glass-card">
+                    <span class="badge">EA Sports FC</span>
+                    <h3>104 OVR Squad + 50M Coins</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">Price: <b>₹350</b><br><span style="color:#00ff88; font-size:0.8rem;">✔ ZONEX Middleman Protected</span></p>
+                    <button class="btn btn-pink" onclick="alert('Buy Request Sent!')">Buy Safely</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. SMART SENSITIVITY SEARCH -->
+        <div id="sensitivity" class="section">
+            <h2>🎯 PRO SENSITIVITY & DPI HUB</h2>
+            <p style="color: #ccc; margin-bottom: 15px;">Search any Phone model or PC setup:</p>
+            
+            <div class="form-box">
+                <div class="form-group">
+                    <label>Search Device / PC Model</label>
+                    <input type="text" id="search-device" placeholder="Type phone or PC model..." onkeyup="filterSensitivity()">
+                </div>
+            </div>
+
+            <div class="form-box" style="border-color: #00f0ff;">
+                <h3 style="color: #00f0ff; margin-bottom: 10px;">➕ Admin Panel: Add Device Sensitivity</h3>
+                <div class="form-group">
+                    <label>Device Name (Phone / PC)</label>
+                    <input type="text" id="sens-phone" placeholder="Ex: Realme GT 8 Pro">
+                </div>
+                <div class="form-group">
+                    <label>Sensitivity Settings / Config</label>
+                    <input type="text" id="sens-values" placeholder="Ex: General: 95 | Red Dot: 90 | DPI: 540">
+                </div>
+                <button class="btn" onclick="addSensitivity()">Publish to Database 🎯</button>
+            </div>
+
+            <div class="grid-cards" id="sensitivity-list">
+                <div class="glass-card" data-name="realme gt series 12x">
+                    <span class="badge verified">Verified Pro Config</span>
+                    <h3>Realme GT / 12x 5G</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">General: <b>96</b> | Red Dot: <b>92</b> | 2X: <b>88</b><br>DPI: <b>520</b></p>
+                </div>
+                <div class="glass-card" data-name="poco x6 pro f6">
+                    <span class="badge verified">Verified Pro Config</span>
+                    <h3>Poco X6 Pro / F6</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">General: <b>98</b> | Red Dot: <b>95</b> | 2X: <b>90</b><br>DPI: <b>580</b></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. GAMER CLIPS & TOP CREATOR LEADERBOARD -->
+        <div id="videos" class="section">
+            <h2>👑 ZONEX TOP CREATOR LEADERBOARD</h2>
+            <p style="color: #ccc; margin-bottom: 15px;">Top creators with the most viewed videos get featured here & earn reward coins!</p>
+            
+            <div class="grid-cards" id="leaderboard-list" style="margin-bottom: 25px;">
+                <div class="glass-card" style="border-color: #ffd700;">
+                    <span class="badge top-creator">🔥 #1 Rank Creator</span>
+                    <h3>Al Ameen Gaming</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 5px;">Total Views: <b>14.2K</b> | Earned: <b>🪙 500 Coins</b></p>
+                </div>
+                <div class="glass-card">
+                    <span class="badge verified">#2 Rank Creator</span>
+                    <h3>Malayali Pro YT</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 5px;">Total Views: <b>9.8K</b> | Earned: <b>🪙 300 Coins</b></p>
+                </div>
+            </div>
+
+            <h2>▶️ UPLOAD CLIPS & EARN COINS</h2>
+            <div class="form-box">
+                <h3 style="color: #ff007f; margin-bottom: 10px;">📤 Upload Video & Setup Profile</h3>
+                <div class="form-group">
+                    <label>Your Creator / Gaming Name</label>
+                    <input type="text" id="creator-name" placeholder="Ex: Al Ameen">
+                </div>
+                <div class="form-group">
+                    <label>Video Title</label>
+                    <input type="text" id="vid-title" placeholder="Ex: Free Fire 1 Tap Montage">
+                </div>
+                <div class="form-group">
+                    <label>Select Video File (MP4 / WebM)</label>
+                    <input type="file" id="vid-file" accept="video/*">
+                </div>
+                <button class="btn btn-pink" onclick="uploadVideo()">Publish Video & Earn Views 🚀</button>
+            </div>
+
+            <div class="form-box" style="text-align: center; border-color: #25d366; padding: 25px;">
+                <h3 style="color: #25d366; margin-bottom: 10px;">💬 Want direct admin feature?</h3>
+                <a href="https://wa.me/919745013938?text=Hello%20ZONEX%20Admin,%20Here%20is%20my%20gaming%20video%20clip!" target="_blank" class="btn btn-whatsapp">💬 Send Clip via WhatsApp (+91 97450 13938)</a>
+            </div>
+
+            <div class="grid-cards" id="video-feed">
+                <div class="glass-card">
+                    <span class="badge top-creator">👑 Top Creator | Al Ameen Gaming</span>
+                    <h3>Extreme One Tap Custom Match</h3>
+                    <p style="color: #ccc; font-size: 0.85rem; margin-top: 5px;">Views: <b style="color: #00f0ff;">1.5K Views</b> (Earned 🪙 50 Coins)</p>
+                    <video controls>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. MY STUDIO / PROFILE -->
+        <div id="profile" class="section">
+            <h2>👤 MY ZONEX STUDIO & PROFILE</h2>
+            <div class="glass-card" style="margin-bottom: 20px;">
+                <h3 style="color: #00f0ff;" id="profile-display-name">Creator / Admin</h3>
+                <p style="color: #ccc; margin-top: 5px;">Status: <span style="color:#00ff88;">Active Google Session</span><br>Wallet Coins: <b style="color: #ff9900;" id="profile-coins">150 Coins</b></p>
+                <button class="btn btn-pink" onclick="updateProfileName()">✏️ Edit Creator Profile Name</button>
+            </div>
+
+            <h2>📚 Your Uploaded Videos & Earnings</h2>
+            <div class="grid-cards" id="my-uploads">
+                <div class="glass-card">
+                    <span class="badge">Your Upload</span>
+                    <h3>Sample Montage Clip</h3>
+                    <p style="color: #ccc; font-size: 0.85rem; margin-top: 5px;">Views: <b>450 Views</b> | Earned: <b style="color:#00ff88;">🪙 20 Coins</b></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. PLAY STORE REDEEM SECTION -->
+        <div id="redeem" class="section">
+            <h2>💎 CONVERT COINS TO GOOGLE PLAY REDEEM</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">Your Current Balance: <b style="color: #00f0ff; font-size: 1.2rem;" id="wallet-coins">150 Coins</b></p>
+            
+            <div class="grid-cards">
+                <div class="glass-card">
+                    <span class="badge">Starter Pack</span>
+                    <h3>₹10 Google Play Code</h3>
+                    <p style="color: #ccc; margin: 10px 0;">Required: <b>200 Coins</b></p>
+                    <button class="btn" onclick="redeemCode(200, 10)">Redeem ₹10</button>
+                </div>
+                <div class="glass-card">
+                    <span class="badge verified">Popular</span>
+                    <h3>₹50 Google Play Code</h3>
+                    <p style="color: #ccc; margin: 10px 0;">Required: <b>900 Coins</b></p>
+                    <button class="btn btn-pink" onclick="redeemCode(900, 50)">Redeem ₹50</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Config Integration -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyA7i0tyOff48EHp1VrN2yXOQSWQWkwT6_0",
+          authDomain: "zonex-548d8.firebaseapp.com",
+          projectId: "zonex-548d8",
+          storageBucket: "zonex-548d8.firebasestorage.app",
+          messagingSenderId: "79809284008",
+          appId: "1:79809284008:web:28a219c397427db71dbf9d",
+          measurementId: "G-2MRV5M2M24"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        console.log("🔥 ZONEX Firebase Connected Successfully!");
+    </script>
+
+    <script>
+        let coins = 150;
+        let currentCreatorName = "Al Ameen";
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if(btn.getAttribute('onclick').includes(tabId)) {
+                    btn.classList.add('active');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function claimDailyCoin() {
+            coins += 50;
+            updateCoinDisplay();
+            alert("🎉 Daily Login Bonus: +50 ZONEX Coins Added!");
+        }
+
+        function updateCoinDisplay() {
+            document.getElementById('coin-balance').innerText = coins;
+            document.getElementById('wallet-coins').innerText = coins + " Coins";
+            document.getElementById('profile-coins').innerText = coins + " Coins";
+        }
+
+        function updateProfileName() {
+            let newName = prompt("Enter your new Creator / Gaming Name:", currentCreatorName);
+            if(newName) {
+                currentCreatorName = newName;
+                document.getElementById('profile-display-name').innerText = newName;
+                alert("✅ Profile Name Updated Successfully to: " + newName);
+            }
+        }
+
+        function addGiveaway() {
+            const name = document.getElementById('yt-name').value;
+            const prize = document.getElementById('yt-prize').value;
+            const room = document.getElementById('yt-room').value;
+            if(!name || !prize || !room) { alert("Please fill all details!"); return; }
+            
+            const card = `<div class="glass-card"><span class="badge verified">Verified</span><h3>₹${prize} Match</h3><p style="color:#ccc; font-size:0.9rem;">Creator: <b>${name}</b><br>Room: <b>${room}</b></p><button class="btn">Copy ID</button></div>`;
+            document.getElementById('giveaway-list').insertAdjacentHTML('afterbegin', card);
+            alert("Giveaway Posted Successfully!");
+        }
+
+        function calculateCommission() {
+            const price = parseFloat(document.getElementById('acc-price').value) || 0;
+            const fee = Math.round(price * 0.10);
+            document.getElementById('comm-display').innerText = `ZONEX Platform Fee (10%): ₹${fee} | You Receive: ₹${price - fee}`;
+        }
+
+        function addAccount() {
+            const title = document.getElementById('acc-title').value;
+            const price = document.getElementById('acc-price').value;
+            if(!title || !price) { alert("Please fill details!"); return; }
+            const card = `<div class="glass-card"><span class="badge">Account</span><h3>${title}</h3><p style="color:#ccc; font-size:0.9rem;">Price: <b>₹${price}</b></p><button class="btn btn-pink">Buy Safely</button></div>`;
+            document.getElementById('market-list').insertAdjacentHTML('afterbegin', card);
+            alert("Account Listed Successfully!");
+        }
+
+        function filterSensitivity() {
+            let input = document.getElementById('search-device').value.toLowerCase();
+            let cards = document.querySelectorAll('#sensitivity-list .glass-card');
+            
+            cards.forEach(card => {
+                let name = card.getAttribute('data-name') || card.innerText.toLowerCase();
+                if(name.includes(input)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function addSensitivity() {
+            const phone = document.getElementById('sens-phone').value;
+            const values = document.getElementById('sens-values').value;
+            if(!phone || !values) { alert("Please enter device and settings!"); return; }
+            
+            const card = `
+                <div class="glass-card" data-name="${phone.toLowerCase()}">
+                    <span class="badge verified">Pro Config</span>
+                    <h3>${phone}</h3>
+                    <p style="color: #ccc; font-size: 0.9rem; margin-top: 8px;">${values}</p>
+                </div>`;
+            document.getElementById('sensitivity-list').insertAdjacentHTML('afterbegin', card);
+            alert("Sensitivity Published to Database!");
+            document.getElementById('sens-phone').value = "";
+            document.getElementById('sens-values').value = "";
+        }
+
+        function uploadVideo() {
+            const title = document.getElementById('vid-title').value;
+            const creatorInput = document.getElementById('creator-name').value || currentCreatorName;
+            const fileInput = document.getElementById('vid-file');
+            
+            if(!title || fileInput.files.length === 0) { 
+                alert("⚠️ Please enter a title and select a video file!"); 
+                return; 
+            }
+
+            const videoFile = fileInput.files[0];
+            const videoURL = URL.createObjectURL(videoFile);
+
+            coins += 25;
+            updateCoinDisplay();
+
+            const feedCard = `
+                <div class="glass-card">
+                    <span class="badge top-creator">👑 Creator | ${creatorInput}</span>
+                    <h3>${title}</h3>
+                    <p style="color: #ccc; font-size: 0.85rem; margin-top: 5px;">Views: <b style="color: #00f0ff;">100 Initial Views</b> (Earned 🪙 25 Bonus Coins)</p>
+                    <video controls>
+                        <source src="${videoURL}" type="${videoFile.type}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>`;
+            
+            const profileCard = `
+                <div class="glass-card">
+                    <span class="badge">Your Upload</span>
+                    <h3>${title}</h3>
+                    <p style="color: #ccc; font-size: 0.85rem; margin-top: 5px;">Views: <b>100 Views</b> | Reward: <b style="color:#00ff88;">🪙 +25 Coins Added</b></p>
+                </div>`;
+            
+            document.getElementById('video-feed').insertAdjacentHTML('afterbegin', feedCard);
+            document.getElementById('my-uploads').insertAdjacentHTML('afterbegin', profileCard);
+            
+            alert(`🚀 Video published successfully, ${creatorInput}! 🪙 25 Reward Coins added to your wallet for publishing!`);
+            document.getElementById('vid-title').value = "";
+            fileInput.value = "";
+        }
+
+        function redeemCode(req, amt) {
+            if(coins >= req) {
+                coins -= req;
+                updateCoinDisplay();
+                alert(`🎉 Success! Your ₹${amt} Google Play Redeem Code: ZNX-${Math.floor(1000+Math.random()*9000)}`);
+            } else {
+                alert("❌ Not enough coins! Upload more video clips or check-in daily to earn coins.");
+            }
+        }
+    </script>
+</body>
+</html>
